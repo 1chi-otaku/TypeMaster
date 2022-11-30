@@ -48,5 +48,14 @@
     <Image Include="karasik.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="64.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icon2.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="32.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

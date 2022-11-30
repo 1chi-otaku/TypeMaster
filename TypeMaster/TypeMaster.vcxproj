@@ -108,6 +108,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -139,6 +140,9 @@
     <ResourceCompile Include="TypeMaster.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="32.ico" />
+    <Image Include="64.ico" />
+    <Image Include="icon2.ico" />
     <Image Include="karasik.bmp" />
     <Image Include="small.ico" />
     <Image Include="TypeMaster.ico" />
