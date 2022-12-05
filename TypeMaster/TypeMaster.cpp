@@ -20,16 +20,15 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPTSTR lpszCmdLin
 }
 
 
-HWND hEditControl;
-HWND hEditControl2;
-HWND hEditControl3; 
-HWND hPressedButton;
+HWND hEditControl, hEditControl2, hEditControl3, hEditControl4, hPressedButton;
 PNOTIFYICONDATA pNID;
 HICON hIcon;
-
+BOOL FLAG = TRUE;
+HANDLE hThread;
 
 TCHAR* str = new TCHAR[_tcslen(TEXT("The universe has a beginning, but no end. Infinity. Stars, too, have their own beginnings, but their own power results in their destruction. Finite. It is those who possess wisdom who are the greatest fools. History has shown us this. You could say that this is the final warning from God to those who resist."))+1];
 int missesCount = 0;
+int characterAmount = 0;
 
 void DeleteFirstCharacter() {
 	int size = _tcslen(str);
@@ -51,7 +50,6 @@ void DeleteFirstCharacter() {
 	str = str2;
 	SetWindowText(hEditControl2, str);
 }
-
 void ButtonPressed(HWND hWnd, TCHAR symbol) {
 	EnableWindow(hPressedButton, FALSE);
 	int identificator;
@@ -63,6 +61,25 @@ void ButtonPressed(HWND hWnd, TCHAR symbol) {
 		return;
 	hPressedButton = GetDlgItem(hWnd, (10000 - identificator + int(symbol)));
 	EnableWindow(hPressedButton, TRUE);
+}
+DWORD WINAPI Timer(LPVOID lp)
+{
+	int minutes = 0;
+	int seconds = 0;
+	TCHAR tchar[16];
+	while (FLAG == TRUE)
+	{
+		if (seconds == 60) {
+			seconds = 0;
+			minutes++;
+		}
+		wsprintf(tchar, TEXT("         %d:%d"), minutes, seconds);
+		SetWindowText(hEditControl3, tchar);
+		Sleep(1000);
+		seconds++;
+	}
+	FLAG = FALSE;
+	return 0;
 }
 
 BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -91,11 +108,12 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		hEditControl = GetDlgItem(hWnd, IDC_EDIT4);
 		hEditControl2 = GetDlgItem(hWnd, IDC_EDIT7);
 		hEditControl3 = GetDlgItem(hWnd, IDC_EDIT6);
+		hEditControl4 = GetDlgItem(hWnd, IDC_EDIT2);
 		SetWindowText(hEditControl2, str);
+		SetWindowText(hEditControl4, TEXT("Mistakes - % 0\r\nCharacters - % 0"));
 		pNID = new NOTIFYICONDATA;
 		HINSTANCE hInst = GetModuleHandle(NULL);
-
-
+		hThread = CreateThread(NULL, 0, Timer, hEditControl3, 0, NULL);
 
 
 		hIcon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_ICON1)); // upload an icon
@@ -111,6 +129,7 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		lstrcpy(pNID->szInfo, TEXT("Type Master is hidden."));
 		lstrcpy(pNID->szInfoTitle, TEXT("TypeMaster"));
 		pNID->uID = WM_USER;
+		
 		return TRUE;
 
 	}
@@ -132,7 +151,9 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				GetWindowText(hEditControl2, buffer, 512);
 				int size = _tcslen(buffer2);
 				ButtonPressed(hWnd, buffer2[size - 1]);
+
 				if (_tcslen(buffer) == 1) {
+					FLAG = FALSE;
 					PlaySoundA((LPCSTR)"questwin.wav", NULL, SND_FILENAME | SND_ASYNC);
 					MessageBox(hWnd, TEXT("You won!"), TEXT("VICTORY!"), MB_OK | MB_ICONINFORMATION);
 				}
@@ -140,15 +161,15 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				if (_tcslen(buffer) > 0) {
 					if (buffer2[size - 1] == buffer[0]) {
 						DeleteFirstCharacter();
+						characterAmount++;
 					}
 					else {
 						if(buffer2[size - 1] != ' ')
 							missesCount++;
-
-						wsprintf(buffer, TEXT("%d"), missesCount);
-						SetWindowText(hEditControl3, buffer);
 					}
 				}
+				wsprintf(buffer, TEXT("Mistakes - %d\r\nCharacters - %d"), missesCount, characterAmount);
+				SetWindowText(hEditControl4, buffer);
 
 				return TRUE;
 			}
