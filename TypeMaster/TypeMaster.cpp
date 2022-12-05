@@ -27,7 +27,6 @@ PNOTIFYICONDATA pNID;
 HICON hIcon;
 
 
-
 TCHAR* str = new TCHAR[_tcslen(TEXT("The universe has a beginning, but no end. Infinity. Stars, too, have their own beginnings, but their own power results in their destruction. Finite. It is those who possess wisdom who are the greatest fools. History has shown us this. You could say that this is the final warning from God to those who resist."))+1];
 int missesCount = 0;
 
@@ -50,6 +49,12 @@ void DeleteFirstCharacter() {
 	delete[]str;
 	str = str2;
 	SetWindowText(hEditControl2, str);
+}
+
+void ButtonPressed(TCHAR symbol) {
+	TCHAR buffer3[5];
+	wsprintf(buffer3, TEXT("%d"), int(symbol));
+	
 }
 
 BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -82,6 +87,9 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		pNID = new NOTIFYICONDATA;
 		HINSTANCE hInst = GetModuleHandle(NULL);
 
+
+
+
 		hIcon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_ICON1)); // upload an icon
 		SetClassLong(hWnd, -14, LONG(hIcon)); // install an icon
 		memset(pNID, 0, sizeof(NOTIFYICONDATA)); 
@@ -109,19 +117,21 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDC_EDIT4:
 			switch (HIWORD(wParam)) {
 			case EN_CHANGE:
+				
 				TCHAR buffer[512];
+				TCHAR buffer2[512];
+				GetWindowText(hEditControl, buffer2, 512);
 				GetWindowText(hEditControl2, buffer, 512);
+				int size = _tcslen(buffer2);
+				ButtonPressed(buffer2[size - 1]);
+
 				if (_tcslen(buffer) == 1) {
 					PlaySoundA((LPCSTR)"questwin.wav", NULL, SND_FILENAME | SND_ASYNC);
 					MessageBox(hWnd, TEXT("You won!"), TEXT("VICTORY!"), MB_OK | MB_ICONINFORMATION);
 				}
 
 				if (_tcslen(buffer) > 0) {
-					TCHAR buffer2[512];
-					GetWindowText(hEditControl, buffer2, 512);
-					int size = _tcslen(buffer2);
 					if (buffer2[size - 1] == buffer[0]) {
-						//Удалить первый символ буффера.
 						DeleteFirstCharacter();
 					}
 					else {
