@@ -23,6 +23,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPTSTR lpszCmdLin
 HWND hEditControl;
 HWND hEditControl2;
 HWND hEditControl3; 
+HWND hPressedButton;
 PNOTIFYICONDATA pNID;
 HICON hIcon;
 
@@ -51,10 +52,17 @@ void DeleteFirstCharacter() {
 	SetWindowText(hEditControl2, str);
 }
 
-void ButtonPressed(TCHAR symbol) {
-	TCHAR buffer3[5];
-	wsprintf(buffer3, TEXT("%d"), int(symbol));
-	
+void ButtonPressed(HWND hWnd, TCHAR symbol) {
+	EnableWindow(hPressedButton, FALSE);
+	int identificator;
+	if (int(symbol) >= 65 && int(symbol) <= 90 || int(symbol) == 32)
+		identificator = 0;
+	else if (int(symbol) >= 97 && int(symbol) <= 122)
+		identificator = 32;
+	else
+		return;
+	hPressedButton = GetDlgItem(hWnd, (10000 - identificator + int(symbol)));
+	EnableWindow(hPressedButton, TRUE);
 }
 
 BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -123,8 +131,7 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				GetWindowText(hEditControl, buffer2, 512);
 				GetWindowText(hEditControl2, buffer, 512);
 				int size = _tcslen(buffer2);
-				ButtonPressed(buffer2[size - 1]);
-
+				ButtonPressed(hWnd, buffer2[size - 1]);
 				if (_tcslen(buffer) == 1) {
 					PlaySoundA((LPCSTR)"questwin.wav", NULL, SND_FILENAME | SND_ASYNC);
 					MessageBox(hWnd, TEXT("You won!"), TEXT("VICTORY!"), MB_OK | MB_ICONINFORMATION);
