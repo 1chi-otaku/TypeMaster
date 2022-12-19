@@ -28,7 +28,7 @@ BOOL FLAG = TRUE;
 HANDLE hThread;
 
 TCHAR* str = new TCHAR[_tcslen(TEXT("The universe has a beginning, but no end. Infinity. Stars, too, have their own beginnings, but their own power results in their destruction. Finite. It is those who possess wisdom who are the greatest fools. History has shown us this. You could say that this is the final warning from God to those who resist."))+1];
-int missesCount = 0;
+int missesCount = -1;
 int characterAmount = 0;
 
 DWORD WINAPI Timer(LPVOID lp)
@@ -194,10 +194,11 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					EnableWindow(hEditControl2, FALSE);
 					EnableWindow(hEditControl4, FALSE);
 					FLAG = TRUE;
-					characterAmount = 0;
+					characterAmount = -1;
 					missesCount = -1;
 					SetWindowText(hEditControl4, TEXT("Mistakes - 0\r\nCharacters - 0"));
 				}
+
 
 				if (_tcslen(buffer) > 0) {
 					if (buffer2[size - 1] == buffer[0]) {
