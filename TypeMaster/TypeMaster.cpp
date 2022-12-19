@@ -88,11 +88,11 @@ void ClearType() {
 	EnableWindow(hButtonStart, FALSE);
 	EnableWindow(hEditControl3, TRUE);
 	EnableWindow(hEditControl, TRUE);
-	//EnableWindow(hEditControl2, TRUE);
+	EnableWindow(hEditControl2, TRUE);
 	EnableWindow(hEditControl4, TRUE);
 	delete[] str;
-	str = new TCHAR[_tcslen(TEXT("The universe has a beginning, but no end. Infinity. Stars, too, have their own beginnings, but their own power results in their destruction. Finite. It is those who possess wisdom who are the greatest fools. History has shown us this. You could say that this is the final warning from God to those who resist.")) + 1];
-	TCHAR buffer[512] = TEXT("The universe has a beginning, but no end. Infinity. Stars, too, have their own beginnings, but their own power results in their destruction. Finite. It is those who possess wisdom who are the greatest fools. History has shown us this. You could say that this is the final warning from God to those who resist.");
+	str = new TCHAR[_tcslen(TEXT("The universe has a beginning, but no end. Stars, too, have their own beginnings, but their own power results in their destruction. Finite. It is those who possess wisdom who are the greatest fools. History has shown us this. You could say that this is the final warning from God to those who resist.")) + 1];
+	TCHAR buffer[512] = TEXT("The universe has a beginning, but no end. Stars, too, have their own beginnings, but their own power results in their destruction. Finite. It is those who possess wisdom who are the greatest fools. History has shown us this. You could say that this is the final warning from God to those who resist.");
 	wsprintf(str, buffer);
 
 	SetWindowText(hEditControl2, str);
@@ -129,7 +129,7 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		hEditControl4 = GetDlgItem(hWnd, IDC_EDIT2);
 		hButtonStart = GetDlgItem(hWnd, IDC_START);
 
-		TCHAR buffer[512] = TEXT("The universe has a beginning, but no end. Infinity. Stars, too, have their own beginnings, but their own power results in their destruction. Finite. It is those who possess wisdom who are the greatest fools. History has shown us this. You could say that this is the final warning from God to those who resist.");
+		TCHAR buffer[512] = TEXT("The universe has a beginning, but no end. Stars, too, have their own beginnings, but their own power results in their destruction. Finite. It is those who possess wisdom who are the greatest fools. History has shown us this. You could say that this is the final warning from God to those who resist.");
 		wsprintf(str, buffer);
 		SetWindowText(hEditControl2, str);
 		SetWindowText(hEditControl4, TEXT("Mistakes - 0\r\nCharacters - 0"));
