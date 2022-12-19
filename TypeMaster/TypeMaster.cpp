@@ -32,7 +32,7 @@ HANDLE hThread;
 TCHAR* str = new TCHAR[_tcslen(TEXT("The universe has a beginning, but no end. Infinity. Stars, too, have their own beginnings, but their own power results in their destruction. Finite. It is those who possess wisdom who are the greatest fools. History has shown us this. You could say that this is the final warning from God to those who resist."))+1];
 int missesCount = -1;
 int characterAmount = 0;
-const int BUFFERLEN = 256;
+const int BUFFERLEN = 512;
 
 DWORD WINAPI Timer(LPVOID lp)			//Starts a timer until the string is completely written.
 {
@@ -87,7 +87,7 @@ void ButtonPressed(HWND hWnd, TCHAR symbol) { //Calculates what button was press
 }
 
 void ClearType() {//Clears edit controls and starts new game.
-	TerminateThread(hThread, 0);																											//Terminating Time process.
+	TerminateThread(hThread, 0);
 	hThread = CreateThread(NULL, 0, Timer, hEditControl3, 0, NULL);			//Starting new Time process.
 	//Enabling edit control and disabling 'Start' button.
 	EnableWindow(hButtonStart, FALSE);
@@ -109,6 +109,7 @@ void ClearType() {//Clears edit controls and starts new game.
 
 	//Plays uplifting music.
 	PlaySoundA((LPCSTR)"quest.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	
 
 }
 
@@ -200,6 +201,7 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				ButtonPressed(hWnd, buffer2[size - 1]);						//Calculating what key was pressed to show it on the virtual keyboard.
 
 				if (_tcslen(buffer) == 1) {											//If the input string is empty, then the player has finished typing the string.
+					isActive = FALSE;
 					TCHAR statistic[BUFFERLEN];
 					wsprintf(statistic, TEXT("Mistakes - %d\r\nCharacters - %d"), missesCount, characterAmount);
 					PlaySoundA((LPCSTR)"questwin.wav", NULL, SND_FILENAME | SND_ASYNC);				//Plays 'victory' sound.
@@ -212,8 +214,8 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					EnableWindow(hEditControl4, FALSE);
 					characterAmount = -1;
 					missesCount = -1;
-					SetWindowText(hEditControl4, TEXT("Mistakes - 0\r\nCharacters - 0"));
-					isActive = FALSE;																					//Settings isActive to false, so Timer thread stop working.
+					
+					SetWindowText(hEditControl4, TEXT("Mistakes - 0\r\nCharacters - 0"));																			//Settings isActive to false, so Timer thread stop working.
 				}
 				if (_tcslen(buffer) > 0) {																				//If the last pressed key in input edit control is equal to the first symbol in the input key.
 					if (buffer2[size - 1] == buffer[0]) {
