@@ -42,7 +42,7 @@ DWORD WINAPI Timer(LPVOID lp)
 			seconds = 0;
 			minutes++;
 		}
-		wsprintf(tchar, TEXT("         %d:%d"), minutes, seconds);
+		wsprintf(tchar, TEXT("      %d:%d"), minutes, seconds);
 		SetWindowText(hEditControl3, tchar);
 		Sleep(1000);
 		seconds++;
@@ -123,10 +123,10 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		return TRUE;
 
 	case WM_INITDIALOG: {
-		hEditControl = GetDlgItem(hWnd, IDC_EDIT4);
-		hEditControl2 = GetDlgItem(hWnd, IDC_EDIT7);
-		hEditControl3 = GetDlgItem(hWnd, IDC_EDIT6);
-		hEditControl4 = GetDlgItem(hWnd, IDC_EDIT2);
+		hEditControl = GetDlgItem(hWnd, IDC_EDIT4); //Writing Edit
+		hEditControl2 = GetDlgItem(hWnd, IDC_EDIT7); //Text Edit
+		hEditControl3 = GetDlgItem(hWnd, IDC_EDIT6); //Time Edit
+		hEditControl4 = GetDlgItem(hWnd, IDC_EDIT2); //Statistic Edit
 		hButtonStart = GetDlgItem(hWnd, IDC_START);
 
 		TCHAR buffer[512] = TEXT("The universe has a beginning, but no end. Stars, too, have their own beginnings, but their own power results in their destruction. Finite. It is those who possess wisdom who are the greatest fools. History has shown us this. You could say that this is the final warning from God to those who resist.");
@@ -138,7 +138,7 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		EnableWindow(hEditControl, FALSE);
 		EnableWindow(hEditControl2, FALSE);
 		hIcon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_ICON1)); // upload an icon
-		SetClassLong(hWnd, -14, LONG(hIcon)); // install an icon
+		SetClassLong(hWnd, -13, LONG(hIcon)); // install an icon
 		memset(pNID, 0, sizeof(NOTIFYICONDATA)); 
 		pNID->cbSize = sizeof(NOTIFYICONDATA); 
 		pNID->hIcon = hIcon; 
@@ -154,11 +154,14 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		HFONT hFont;
 
-		LOGFONT LF = { -22, 0, 0, 0, FW_HEAVY, 0, 0, 0, RUSSIAN_CHARSET,
-		   OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DRAFT_QUALITY, 0, TEXT("Microsoft Sans Serif") };
+		LOGFONT LF = { -22, 0, 0, 0, FW_HEAVY, 0, 0, 0, RUSSIAN_CHARSET,OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DRAFT_QUALITY, 0, TEXT("Microsoft Sans Serif") };
 		hFont = CreateFontIndirect(&LF);
 		SendDlgItemMessage(hWnd, IDC_EDIT4, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
 		SendDlgItemMessage(hWnd, IDC_EDIT7, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
+		LF = { -13, 0, 0, 0, FW_HEAVY, 0, 0, 0, RUSSIAN_CHARSET,OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DRAFT_QUALITY, 0, TEXT("Microsoft Sans Serif") };
+		hFont = CreateFontIndirect(&LF);
+		SendDlgItemMessage(hWnd, IDC_EDIT2, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
+		SendDlgItemMessage(hWnd, IDC_EDIT6, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
 		
 		return TRUE;
 
@@ -189,9 +192,11 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				ButtonPressed(hWnd, buffer2[size - 1]);
 
 				if (_tcslen(buffer) == 1) {
+					TCHAR statistic[512];
+					wsprintf(statistic, TEXT("Mistakes - %d\r\nCharacters - %d"), missesCount, characterAmount);
 					FLAG = FALSE;
 					PlaySoundA((LPCSTR)"questwin.wav", NULL, SND_FILENAME | SND_ASYNC);
-					MessageBox(hWnd, TEXT("You won!"), TEXT("VICTORY!"), MB_OK | MB_ICONINFORMATION);
+					MessageBox(hWnd, statistic, TEXT("VICTORY!"), MB_OK | MB_ICONINFORMATION);
 					EnableWindow(hButtonStart, TRUE);
 					EnableWindow(hEditControl3, FALSE);
 					EnableWindow(hEditControl, FALSE);
