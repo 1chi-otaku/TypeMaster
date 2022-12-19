@@ -88,7 +88,7 @@ void ClearType() {
 	EnableWindow(hButtonStart, FALSE);
 	EnableWindow(hEditControl3, TRUE);
 	EnableWindow(hEditControl, TRUE);
-	EnableWindow(hEditControl2, TRUE);
+	//EnableWindow(hEditControl2, TRUE);
 	EnableWindow(hEditControl4, TRUE);
 	delete[] str;
 	str = new TCHAR[_tcslen(TEXT("The universe has a beginning, but no end. Infinity. Stars, too, have their own beginnings, but their own power results in their destruction. Finite. It is those who possess wisdom who are the greatest fools. History has shown us this. You could say that this is the final warning from God to those who resist.")) + 1];
@@ -151,10 +151,14 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		lstrcpy(pNID->szInfoTitle, TEXT("TypeMaster"));
 		pNID->uID = WM_USER;
 
-		SendMessage(hEditControl2, PBM_SETRANGE, 0, MAKELPARAM(0, 20));
-		SendMessage(hEditControl2, PBM_SETSTEP, 1, 0);
-		SendMessage(hEditControl2, PBM_SETPOS, 0, 0);
-		SendMessage(hEditControl2, PBM_SETBARCOLOR, 0, LPARAM(RGB(215, 215, 215)));
+
+		HFONT hFont;
+
+		LOGFONT LF = { -22, 0, 0, 0, FW_HEAVY, 0, 0, 0, RUSSIAN_CHARSET,
+		   OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DRAFT_QUALITY, 0, TEXT("Microsoft Sans Serif") };
+		hFont = CreateFontIndirect(&LF);
+		SendDlgItemMessage(hWnd, IDC_EDIT4, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
+		SendDlgItemMessage(hWnd, IDC_EDIT7, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
 		
 		return TRUE;
 
