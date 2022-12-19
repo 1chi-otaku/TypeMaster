@@ -16,9 +16,16 @@
 #define IDI_ICON1                       131
 #define IDI_ICON2                       133
 #define IDD_DIALOG2                     134
-
+#define IDC_EDIT5                       1032
+#define IDC_EDIT6                       1034
+#define IDC_EDIT2                       1035
+#define IDC_EDIT4                       1036
+#define IDC_EDIT7                       1037
+#define IDC_BUTTON28                    1038
+#define IDC_HIDE                        1038
+#define IDC_BUTTON1                     1039
+#define IDC_START                       1039
 #define IDC_BUTTON_SPACE                10032
-
 #define IDC_BUTTON_A                    10065
 #define IDC_BUTTON_B                    10066
 #define IDC_BUTTON_C                    10067
@@ -45,18 +52,6 @@
 #define IDC_BUTTON_X                    10088
 #define IDC_BUTTON_Y                    10089
 #define IDC_BUTTON_Z                    10090
-
-
-
-
-
-#define IDC_EDIT5                       1032
-#define IDC_EDIT6                       1034
-#define IDC_EDIT2                       1035
-#define IDC_EDIT4                       1036
-#define IDC_EDIT7                       1037
-#define IDC_BUTTON28                    1038
-#define IDC_HIDE                        1038
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -66,7 +61,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        135
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1039
+#define _APS_NEXT_CONTROL_VALUE         1040
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif
